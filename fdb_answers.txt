@@ -1,1 +1,8 @@
+Q1: FDB decouples these two components because it wants to achieve independent scaling. The TMS layer (write path) handles timestamp managment, commit acceptance, conflict detection, and logging. The SS layer (read path) handles storing data shards and serving client reads directly, asynchronously pull mutation logs from LogServers in the background, and modify SQLite B-tree engine with MVCC support. 
 
+Q2: 
+Q3:
+
+Q4:
+
+Q5:
