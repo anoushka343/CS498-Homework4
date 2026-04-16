@@ -1,8 +1,8 @@
 Q1: FDB decouples these two components because it wants to achieve independent scaling. The TMS layer (write path) handles timestamp managment, commit acceptance, conflict detection, and logging. The SS layer (read path) handles storing data shards and serving client reads directly, asynchronously pull mutation logs from LogServers in the background, and modify SQLite B-tree engine with MVCC support. 
+Q2: The component responsible for detecting read-write conflicts are Resolvers. The check happens during the commit stage by using optimistic concurrency control. 
 
-Q2: 
-Q3:
+Q3: The read version allows a transaction to get a snapshot of the database for a given version. This ensures SSI because the reads can happen without locking.
 
-Q4:
+Q4: A snapshot read selectively relax isolation for specific reads and doesn't add to the transaction's read conflict ranges. They are ideal for backgorund tasks or analytics or when strict serializability is not required for certain keys.
 
-Q5:
+Q5: FDB recovery is "cheap" because the Transaction System is stateless. When the system fails, it discards the old transaciton system and recruits a new epoch. It has a redo/undo log, but it doesn't have to do the replay, which gets expensive. The sequencer is able to get the recovery version from the log servers. The storage servers also continue to pull data asynchronously in the background. 
